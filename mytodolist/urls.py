@@ -17,10 +17,18 @@ Including another URLconf
 # my_todo_list/urls.py
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.contrib.auth import views as auth_views
+from tasks import views
+from tasks import views as task_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tasks/', include('tasks.urls')),
+    path('signup/', views.signup, name='signup'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # Перенаправление корневого URL на главную страницу
+    path('', views.home, name='home'),
 ]
 

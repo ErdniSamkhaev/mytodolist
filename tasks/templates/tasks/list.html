@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
+<head>
+    <!-- Титул страницы и ссылки на стили, скрипты и прочее могут быть здесь -->
+    <title></title>
+</head>
+<body>
+
+<!-- Форма добавления задачи -->
+<!-- Метод POST используется для отправки данных формы на сервер -->
 <form method="post">
     {% csrf_token %}
+    <!-- CSRF токен для предотвращения атак CSRF -->
     {{ form.as_p }}
+    <!-- Выводит поля формы в виде параграфов -->
     <button type="submit">Add Task</button>
+    <!-- Кнопка для отправки формы -->
 </form>
+
+<!-- Список существующих задач -->
 {% for task in tasks %}
-  <p>{{ task.title }} - {{ task.completed }} - {{ task.priority }}</p>
+    <!-- Отображение названия, статуса выполнения и приоритета каждой задачи -->
+     <p>{{ task.title }} - {{ task.completed }} <a href="{% url 'toggle_task' task.id %}">Toggle</a></p>
 {% endfor %}
+
+<!-- Подвал сайта или дополнительные скрипты могут быть здесь -->
+
+</body>
+</html>
