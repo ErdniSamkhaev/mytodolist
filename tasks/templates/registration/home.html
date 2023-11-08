@@ -1,12 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Добро пожаловать в ToDo List!</h1>
-    <a href="{% url 'login' %}">Вход</a> |
-    <a href="{% url 'signup' %}">Регистрация</a>
+    <div class="container text-center">
+        <h1>Добро пожаловать в ToDo List!</h1>
+        <div class="link-container">
+            <a href="{% url 'login' %}">Вход</a> |
+            <a href="{% url 'signup' %}">Регистрация</a>
+        </div>
+    </div>
+    <script src="{% static 'js/home.js' %}"></script>
 </body>
 </html>
