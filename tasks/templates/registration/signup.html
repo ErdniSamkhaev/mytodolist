@@ -1,7 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-</form>
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/signup.css' %}">
+    <script src="{% static 'js/signup.js' %}" defer></script>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign up</button>
+    </form>
+</body>
+</html>
