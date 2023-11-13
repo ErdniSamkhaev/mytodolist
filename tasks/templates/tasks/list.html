@@ -5,35 +5,53 @@
     <title>Список задач</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/list.css' %}">
-    <div class="container">
-  <div class="row">
-    <div class="col-md-8">Основной контент</div>
-    <div class="col-md-4">Боковая панель</div>
-  </div>
-</div>
-
-    <!-- Тут могут быть подключения к CSS и JavaScript -->
 </head>
 <body>
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary">Добавить задачу</button>
-</form>
-
-{% for task in tasks %}
-    <div class="task-card">
-        <p>
-            {{ task.title }} - {{ task.completed }}
-            <a href="{% url 'toggle_task' task.id %}">Переключить статус</a>
-            <a href="{% url 'edit_task' task.id %}">Редактировать</a>
-            <a href="{% url 'delete_task' task.id %}">Удалить</a>
-        </p>
+<div class="container mt-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'task_list' %}">Менеджер задач</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link" href="{% url 'logout' %}">Выйти</a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Мои задачи</h2>
+            <form method="post" class="form-inline mb-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success ml-2">Добавить задачу</button>
+            </form>
+            <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center task-card"
+                        data-task-id="{{ task.id }}">
+                        <div>
+                            <label>
+                                <input type="checkbox" onclick="toggleTask({{ task.id }})" {% if task.completed %}
+                                       checked {% endif %}>
+                            </label>
+                            <span class="task-title{% if task.completed %} completed{% endif %}">{{ task.title }}</span>
+                            <span class="badge badge-{{ task.completed|yesno:'success,danger' }}">{{ task.completed|yesno:'Выполнено,В процессе' }}</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-info btn-sm" onclick="editTask({{ task.id }})">Редактировать</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteTask({{ task.id }})">Удалить</button>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-{% endfor %}
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="{% static 'js/list.js' %}"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
+from django.http import JsonResponse
 
 
 def home(request):
@@ -43,26 +44,11 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, owner=request.user)
     if request.method == 'POST':
         task.delete()
-        return redirect('task_list')
+        return JsonResponse({'status': 'success'})
     return render(request, 'tasks/confirm_delete.html', {'task': task})
 
 
 def signup(request):
-    """
-    Представление для регистрации нового пользователя.
-    Обрабатывает GET и POST запросы.
-
-    Параметры:
-    - request: HttpRequest - объект запроса от Django.
-
-    Процесс:
-    - При POST запросе: получает данные из формы регистрации, валидирует их и, если данные корректны,
-      регистрирует нового пользователя, выполняет вход и перенаправляет на список задач.
-    - При GET запросе: создает новую форму регистрации.
-
-    Возвращает:
-    - HttpResponse с рендером шаблона 'registration/signup.html', передавая форму регистрации.
-    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -74,24 +60,9 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+@login_required
 def toggle_task(request, task_id):
-    """
-    Представление для переключения статуса задачи (выполнено/не выполнено).
-    Обрабатывает POST запросы.
-
-    Параметры:
-    - request: HttpRequest - объект запроса от Django.
-    - task_id: int - идентификатор задачи, статус которой нужно изменить.
-
-    Процесс:
-    - Использует get_object_or_404 для поиска задачи по id.
-    - Изменяет статус задачи на противоположный и сохраняет изменения.
-    - Перенаправляет на список задач.
-
-    Возвращает:
-    - HttpResponse с перенаправлением на представление списка задач.
-    """
-    task = get_object_or_404(Task, id=task_id)
+    task = get_object_or_404(Task, id=task_id, owner=request.user)
     task.completed = not task.completed
     task.save()
-    return redirect('task_list')
+    return JsonResponse({'status': 'success'})

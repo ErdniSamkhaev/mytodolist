@@ -1,10 +1,13 @@
 .task-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  transform: perspective(1000px) translateZ(0);
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
 
 .task-card:hover {
-  transform: perspective(1000px) translateZ(20px);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  background-color: #f8f9fa;
+}
+
+.task-title.completed {
+  text-decoration: line-through;
+  color: #6c757d;
 }
