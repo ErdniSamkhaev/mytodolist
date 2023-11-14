@@ -16,9 +16,18 @@ class TaskForm(forms.ModelForm):
             'style': 'width: 100%;'  # Или используй inline стили для изменения ширины
         })
     )
-    deadline = forms.DateField(widget=SelectDateWidget(empty_label=("Choose Year", "Choose Month", "Choose Day"),
-                                                       years=range(datetime.datetime.now().year,
-                                                                   datetime.datetime.now().year + 10)), required=False)
+    priority = forms.ChoiceField(
+        choices=Task.PRIORITY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    deadline = forms.DateField(
+        widget=SelectDateWidget(
+            empty_label=("Choose Year", "Choose Month", "Choose Day"),
+            years=range(datetime.datetime.now().year, datetime.datetime.now().year + 10)
+        ),
+        required=False
+    )
     tags = forms.ModelMultipleChoiceField(
         queryset=Task.tags.through.objects.all(),
         widget=CheckboxSelectMultiple,
@@ -27,7 +36,7 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ['title', 'priority', 'tags', 'deadline']
+        fields = ['title', 'priority', 'deadline']
         widgets = {
             'tags': CheckboxSelectMultiple(),
         }

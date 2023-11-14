@@ -16,6 +16,9 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True, blank=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def get_priority_display(self):
+        return dict(self.PRIORITY_CHOICES).get(self.priority, '')
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)

@@ -9,7 +9,6 @@
 <body>
 <div class="container mt-4">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'task_list' %}">Менеджер задач</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,6 +38,10 @@
                             </label>
                             <span class="task-title{% if task.completed %} completed{% endif %}">{{ task.title }}</span>
                             <span class="badge badge-{{ task.completed|yesno:'success,danger' }}">{{ task.completed|yesno:'Выполнено,В процессе' }}</span>
+                            <span class="badge badge-info">{{ task.get_priority_display }}</span>
+                            <!-- Отображение приоритета -->
+                            <span class="badge badge-secondary">{{ task.deadline|date:"d.m.Y" }}</span>
+                            <!-- Отображение даты -->
                         </div>
                         <div>
                             <button class="btn btn-info btn-sm" onclick="editTask({{ task.id }})">Редактировать</button>
@@ -47,6 +50,7 @@
                     </li>
                 {% endfor %}
             </ul>
+
         </div>
     </div>
 </div>
